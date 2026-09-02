@@ -1,0 +1,174 @@
+{
+  "system": {
+    "num_uavs": 3,
+    "num_sds": 50,
+    "l_max": 150.0,
+    "altitude": 10.0,
+    "T": 320,
+    "r_min": 5.0,
+    "r_max": 15.0,
+    "d_max": 20.0,
+    "v_uav": 20.0,
+    "e_uav": 175.0,
+    "task_mean": 1000000.0,
+    "task_std": 1000000.0,
+    "l_queue_max": 10000000.0,
+    "f_max": 1000000.0,
+    "f_min": 10000.0,
+    "penalty": 1.0,
+    "uav_init_positions": [
+      [
+        15.0,
+        15.0
+      ],
+      [
+        15.0,
+        135.0
+      ],
+      [
+        135.0,
+        135.0
+      ]
+    ]
+  },
+  "environment": {
+    "reward_scale_N_divisor": 1000000.0,
+    "operating_cost": {
+      "transmission_coefficient": 0.1,
+      "reference_rate": 40000000.0,
+      "processing_coefficient": 10.0,
+      "processing_exponent": 3.0,
+      "workload_conversion": 1000.0,
+      "operating_weight": 5.0,
+      "movement_multiplier": 1000000000000.0,
+      "normalization": 1e+16
+    },
+    "energy_overrun_penalty_base": 3.0,
+    "energy_overrun_penalty_per_excess": 0.5,
+    "slot_capacity_mode": "identity",
+    "grid_density_norm": 0,
+    "use_uav_queue": true,
+    "uav_queue_max": 2000000.0,
+    "uav_buffer_mode": "backpressure",
+    "arrival_mode": "onoff",
+    "burst_period": 10,
+    "on_duty": 0.4,
+    "onoff_preserve_load": true,
+    "sd_deadline_ttl": 8,
+    "deadline_ttl": 0,
+    "use_grid_belief": true,
+    "grid_belief_c4": true,
+    "use_channel": true,
+    "ch_gamma0": 2000.0,
+    "ch_link_scale": 300000.0,
+    "ch_eta_min": 3.5,
+    "ch_alloc": "A2",
+    "uav_init_jitter": 5.0,
+    "uav_init_random": false,
+    "hard_energy_constraint": true,
+    "use_energy_obs": true,
+    "energy_init_random": null,
+    "gamma_e": 0.05,
+    "idle_penalty": 0.1,
+    "hetero_cfg": {
+      "n_clusters": 4,
+      "large_count": 2,
+      "sds_large": 13,
+      "sds_small": 12,
+      "rho_large": 0.875,
+      "rho_small": 0.875,
+      "cluster_radius": 18.0,
+      "center_margin": 27.0,
+      "min_center_dist": 60.0
+    },
+    "energy_init_mode": "balanced_permutation",
+    "energy_init_levels": [
+      125.0,
+      150.0,
+      175.0
+    ],
+    "energy_init_range": null,
+    "goal_attribution_mode": "split_admission_completion",
+    "depletion_mask_mode": "agent_terminal_v1",
+    "gu_max_resampling_rounds": 1000,
+    "patch_grid_g": 8
+  },
+  "methods": {
+    "dpp_gcmarl": {
+      "assign_target_mode": "cell",
+      "ego_patch": true,
+      "ego_half": 20.0,
+      "ego_p": 8,
+      "ego_sense": 15.0,
+      "drop_global_belief": true,
+      "goal_offreg": 1.0,
+      "goal_region_r": 25.0,
+      "goal_source": "checkin_eq",
+      "goal_obs_ttl": true,
+      "goal_attribution_mode": "split_admission_completion",
+      "depletion_mask_mode": "agent_terminal_v1"
+    },
+    "mappo": {
+      "assign_target_mode": null,
+      "ego_patch": true,
+      "ego_half": 20.0,
+      "ego_p": 8,
+      "ego_sense": 15.0,
+      "drop_global_belief": true,
+      "goal_offreg": 1.0,
+      "goal_region_r": 25.0,
+      "goal_source": "memory",
+      "goal_obs_ttl": false,
+      "goal_attribution_mode": "split_admission_completion",
+      "depletion_mask_mode": "agent_terminal_v1"
+    },
+    "memory_gcmarl": {
+      "assign_target_mode": "cell",
+      "ego_patch": true,
+      "ego_half": 20.0,
+      "ego_p": 8,
+      "ego_sense": 15.0,
+      "drop_global_belief": true,
+      "goal_offreg": 1.0,
+      "goal_region_r": 25.0,
+      "goal_source": "memory",
+      "goal_obs_ttl": true,
+      "goal_attribution_mode": "split_admission_completion",
+      "depletion_mask_mode": "agent_terminal_v1"
+    }
+  },
+  "training": {
+    "gamma": 0.95,
+    "hidden_dim": 256,
+    "device": "cpu",
+    "episodes": 50000,
+    "save_every": 2000,
+    "log_every": 50,
+    "rollout_episodes": 8,
+    "ppo_epochs": 10,
+    "num_minibatches": 4,
+    "clip": 0.2,
+    "entropy_coef": 0.01,
+    "value_coef": 0.5,
+    "gae_lambda": 0.95,
+    "lr": 0.0003,
+    "log_std_init": -0.5
+  },
+  "evaluation": {
+    "exploration_weight": 0.5
+  },
+  "scenario": {
+    "default": "hetero",
+    "hetero": {
+      "n_clusters": 4,
+      "large_count": 2,
+      "sds_large": 13,
+      "sds_small": 12,
+      "rho_large": 0.875,
+      "rho_small": 0.875,
+      "cluster_radius": 18.0,
+      "center_margin": 27.0,
+      "min_center_dist": 60.0
+    }
+  }
+}

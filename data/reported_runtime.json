@@ -1,0 +1,81 @@
+{
+  "hardware": "Intel Core i9-10940X CPU at 3.30 GHz",
+  "threads": 1,
+  "warmup_iterations": 1000,
+  "measurement_iterations": 10000,
+  "units": "microseconds",
+  "methods": {
+    "memory": {
+      "median": 107.671,
+      "p95": 120.467,
+      "mean": 108.881
+    },
+    "anticipatory": {
+      "median": 158.918,
+      "p95": 166.612,
+      "mean": 161.398
+    },
+    "belief_mpc": {
+      "median": 4285.511,
+      "p95": 4575.597,
+      "mean": 4314.694
+    },
+    "mappo": {
+      "median": 344.291,
+      "p95": 371.948,
+      "mean": 348.012
+    },
+    "memory_gcmarl": {
+      "median": 518.201,
+      "p95": 556.896,
+      "mean": 522.513
+    },
+    "without_gcm": {
+      "median": 168.349,
+      "p95": 175.647,
+      "mean": 168.447
+    },
+    "dpp_gcmarl": {
+      "median": 568.616,
+      "p95": 612.681,
+      "mean": 573.098
+    },
+    "full_information": {
+      "median": 108.153,
+      "p95": 121.68,
+      "mean": 110.101
+    }
+  },
+  "components": {
+    "dpp_assignment": {
+      "median": 97.194,
+      "p95": 103.028,
+      "mean": 97.735
+    },
+    "observation_builder": {
+      "median": 326.826,
+      "p95": 341.364,
+      "mean": 329.183
+    },
+    "actor_network_only": {
+      "median": 55.796,
+      "p95": 61.23,
+      "mean": 56.449
+    },
+    "actor_interface": {
+      "median": 87.154,
+      "p95": 95.64,
+      "mean": 89.43
+    },
+    "plan_governor": {
+      "median": 16.957,
+      "p95": 17.287,
+      "mean": 16.998
+    },
+    "online_decision_total": {
+      "median": 566.447,
+      "p95": 600.362,
+      "mean": 568.833
+    }
+  }
+}
