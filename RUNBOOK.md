@@ -13,8 +13,7 @@ python -m unittest discover -v
 
 ## Reproduce the statistical tables
 
-The released scenario-level rows are sufficient to recompute the means,
-Student-t confidence intervals, paired t-tests, and effect sizes:
+Recompute the statistical tables:
 
 ```bash
 python analyze_results.py
@@ -23,7 +22,7 @@ python analyze_results.py --input data/reported_robustness.json --output results
 
 ## Evaluate the selected policies
 
-Place the four selected checkpoints for each learned method at:
+The selected checkpoints are included in:
 
 ```text
 checkpoints/dpp_gcmarl/seed_0.pt ... seed_3.pt
@@ -88,7 +87,7 @@ python benchmark_runtime.py --components
 ```
 
 The benchmark uses 1,000 warm-up calls followed by 10,000 measured calls after
-160 rollout slots from generator seed 0. Each learned method supplies its own
+160 rollout slots from generator seed 0. Each learned policy generates its own
 rollout. Rule methods share the state obtained from a Memory rollout. The
 component measurements cover DPP assignment, observation construction, actor
 forward pass, actor interface, and processing-rate governor. Per-call timings
