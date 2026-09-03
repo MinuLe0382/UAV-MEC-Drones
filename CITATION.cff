@@ -17,7 +17,7 @@ authors:
     given-names: Joonho
   - family-names: Kim
     given-names: Jin Young
-version: 1.0.0
+version: 1.0.1
 date-released: 2026-09-03
 license: MIT
 repository-code: "https://github.com/MinuLe0382/UAV-MEC-Drones"

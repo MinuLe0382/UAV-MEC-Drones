@@ -233,8 +233,8 @@ def main() -> None:
     parser.add_argument("--window", type=int, default=1000)
     parser.add_argument("--summary", type=Path, default=Path("results/training_summary.json"))
     args = parser.parse_args()
-    if args.window <= 0 or 50000 % args.window:
-        raise ValueError("window must be a positive divisor of 50000")
+    if args.window <= 0 or 10000 % args.window:
+        raise ValueError("window must be a positive divisor of 10000")
     data = _aggregate(args.input.resolve(), args.window)
     _render(data, args.output.resolve().with_suffix(".png" if args.png else ".svg"))
     if args.summary:
