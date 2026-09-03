@@ -29,7 +29,8 @@
         135.0,
         135.0
       ]
-    ]
+    ],
+    "slot_duration_s": 1.0
   },
   "environment": {
     "reward_scale_N_divisor": 1000000.0,

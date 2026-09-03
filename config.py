@@ -15,6 +15,7 @@ SCENARIO = copy.deepcopy(CONFIG["scenario"])
 
 def apply_method(method: str) -> None:
     validate_runtime()
+    validate_slot_duration()
     if method not in CONFIG["methods"]:
         raise ValueError(f"unknown method: {method}")
     SYS.clear()
@@ -26,6 +27,11 @@ def apply_method(method: str) -> None:
 
 def load_config(path: str | Path = ROOT / "config.json") -> dict:
     return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def validate_slot_duration() -> None:
+    if float(CONFIG["system"]["slot_duration_s"]) != 1.0:
+        raise ValueError("Only 1-second slots are supported")
 
 
 def validate_runtime() -> None:

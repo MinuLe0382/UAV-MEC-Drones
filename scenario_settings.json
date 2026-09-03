@@ -1,0 +1,249 @@
+{
+  "splits": {
+    "validation": [
+      120000,
+      120001,
+      120002,
+      120003,
+      120004,
+      120005,
+      120006,
+      120007,
+      120008,
+      120009
+    ],
+    "development": [
+      121000,
+      121001,
+      121002,
+      121003,
+      121004,
+      121005,
+      121006,
+      121007,
+      121008,
+      121009,
+      121010,
+      121011,
+      121012,
+      121013,
+      121014,
+      121015,
+      121016,
+      121017,
+      121018,
+      121019
+    ],
+    "test": [
+      124000,
+      124001,
+      124002,
+      124003,
+      124004,
+      124005,
+      124006,
+      124007,
+      124008,
+      124009,
+      124010,
+      124011,
+      124012,
+      124013,
+      124014,
+      124015,
+      124016,
+      124017,
+      124018,
+      124019,
+      124020,
+      124021,
+      124022,
+      124023,
+      124024,
+      124025,
+      124026,
+      124027,
+      124028,
+      124029,
+      124030,
+      124031,
+      124032,
+      124033,
+      124034,
+      124035,
+      124036,
+      124037,
+      124038,
+      124039
+    ]
+  },
+  "conditions": [
+    {
+      "id": "nominal",
+      "axis": "nominal",
+      "level": 1
+    },
+    {
+      "id": "gu_30",
+      "axis": "num_ground_users",
+      "level": 30,
+      "num_ground_users": 30,
+      "cluster_size_vector": [
+        8,
+        8,
+        7,
+        7
+      ],
+      "population_load_mode": "equal_cluster_load",
+      "rho_per_cluster": 0.875
+    },
+    {
+      "id": "gu_70",
+      "axis": "num_ground_users",
+      "level": 70,
+      "num_ground_users": 70,
+      "cluster_size_vector": [
+        18,
+        18,
+        17,
+        17
+      ],
+      "population_load_mode": "equal_cluster_load",
+      "rho_per_cluster": 0.875
+    },
+    {
+      "id": "clusters_2",
+      "axis": "num_clusters",
+      "level": 2,
+      "cluster_size_vector": [
+        25,
+        25
+      ],
+      "population_load_mode": "equal_cluster_load",
+      "rho_per_cluster": 1.75,
+      "hetero_overrides": {
+        "n_clusters": 2,
+        "min_center_dist": 60,
+        "center_margin": 27
+      }
+    },
+    {
+      "id": "clusters_6",
+      "axis": "num_clusters",
+      "level": 6,
+      "cluster_size_vector": [
+        9,
+        9,
+        8,
+        8,
+        8,
+        8
+      ],
+      "population_load_mode": "equal_cluster_load",
+      "rho_per_cluster": 0.5833333333333334,
+      "hetero_overrides": {
+        "n_clusters": 6,
+        "min_center_dist": 35,
+        "center_margin": 27
+      }
+    },
+    {
+      "id": "population_moderate",
+      "axis": "cluster_population_imbalance",
+      "level": [
+        20,
+        15,
+        10,
+        5
+      ],
+      "cluster_size_vector": [
+        20,
+        15,
+        10,
+        5
+      ],
+      "population_load_mode": "equal_per_gu_load",
+      "total_rho": 3.5,
+      "randomize_population_labels": true
+    },
+    {
+      "id": "population_strong",
+      "axis": "cluster_population_imbalance",
+      "level": [
+        26,
+        12,
+        8,
+        4
+      ],
+      "cluster_size_vector": [
+        26,
+        12,
+        8,
+        4
+      ],
+      "population_load_mode": "equal_per_gu_load",
+      "total_rho": 3.5,
+      "randomize_population_labels": true
+    },
+    {
+      "id": "grid_6",
+      "axis": "coordination_grid_g",
+      "level": 6,
+      "coordination_grid_g": 6
+    },
+    {
+      "id": "grid_10",
+      "axis": "coordination_grid_g",
+      "level": 10,
+      "coordination_grid_g": 10
+    },
+    {
+      "id": "sensing_10m",
+      "axis": "sensing_radius_m",
+      "level": 10,
+      "sensing_radius_m": 10
+    },
+    {
+      "id": "sensing_30m",
+      "axis": "sensing_radius_m",
+      "level": 30,
+      "sensing_radius_m": 30
+    },
+    {
+      "id": "deadline_4",
+      "axis": "collection_deadline_slots",
+      "level": 4,
+      "collection_deadline_slots": 4
+    },
+    {
+      "id": "deadline_12",
+      "axis": "collection_deadline_slots",
+      "level": 12,
+      "collection_deadline_slots": 12
+    },
+    {
+      "id": "workload_0p75",
+      "axis": "workload_multiplier",
+      "level": 0.75,
+      "workload_multiplier": 0.75
+    },
+    {
+      "id": "workload_1p25",
+      "axis": "workload_multiplier",
+      "level": 1.25,
+      "workload_multiplier": 1.25
+    },
+    {
+      "id": "energy_0p8",
+      "axis": "energy_budget_multiplier",
+      "level": 0.8,
+      "energy_budget_multiplier": 0.8
+    },
+    {
+      "id": "energy_1p2",
+      "axis": "energy_budget_multiplier",
+      "level": 1.2,
+      "energy_budget_multiplier": 1.2
+    }
+  ]
+}

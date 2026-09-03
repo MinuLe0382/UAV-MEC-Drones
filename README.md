@@ -17,3 +17,7 @@ python evaluate.py --split test
 ```
 
 Training, robustness, runtime: [RUNBOOK.md](RUNBOOK.md).
+
+Parameters: [PAPER_CONFIG.md](PAPER_CONFIG.md).
+
+Code, data, and checkpoints: [MIT License](LICENSE).

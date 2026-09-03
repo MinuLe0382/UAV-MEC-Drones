@@ -77,6 +77,31 @@ python select_checkpoint.py --method dpp_gcmarl --seed 0 \
 
 Repeat this selection for every method and training seed before evaluation.
 
+## Figure 3
+
+```bash
+python plot_training.py
+```
+
+Reads eight compressed logs from `data/training`. Saves an SVG figure and
+the final 10,000-episode means. Curves use non-overlapping 1,000-episode
+window means; bands show one sample SD across four runs. Add `--png` to
+also produce PNG using ImageMagick.
+
+## Scenario files
+
+Seeds and parameters: `data/scenario_manifest.csv` and `scenario_settings.json`.
+
+```bash
+python generate_scenarios.py --split test --output results/scenarios/test
+python generate_scenarios.py --split robustness --output results/scenarios/robustness
+python generate_scenarios.py --verify-existing
+```
+
+Generation uses the listed seeds and settings, without loading saved arrays.
+Verification compares all nine generated arrays with the 750 supplied files.
+Existing files are not overwritten.
+
 ## Runtime benchmark
 
 Use one CPU thread for all numerical libraries:

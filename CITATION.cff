@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "Please cite this software when using the implementation or data."
+type: software
+title: "Deadline-Paced Patrol with Goal-Conditioned Multi-Agent Reinforcement Learning for Sensing-Limited UAV-Assisted Mobile Edge Computing"
+authors:
+  - family-names: Lee
+    given-names: Mingyu
+  - family-names: Kim
+    given-names: Soohyun
+  - family-names: Kim
+    given-names: Jeongho
+  - family-names: Kim
+    given-names: Kyounghun
+  - family-names: Sun
+    given-names: Youngghyu
+  - family-names: Seon
+    given-names: Joonho
+  - family-names: Kim
+    given-names: Jin Young
+version: 1.0.0
+date-released: 2026-09-03
+license: MIT
+repository-code: "https://github.com/MinuLe0382/UAV-MEC-Drones"
+url: "https://github.com/MinuLe0382/UAV-MEC-Drones"

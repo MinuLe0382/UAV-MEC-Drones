@@ -17,7 +17,7 @@ def _targets_to_action(env, targets: np.ndarray) -> np.ndarray:
 
 def _assign(env, score: np.ndarray) -> np.ndarray:
     distance = np.linalg.norm(env.uav_pos[:, None, :] - env._cell_centers[None, :, :], axis=2)
-    utility = score[None, :] / np.maximum(distance / env.v_uav, 1.0)
+    utility = score[None, :] / np.maximum(distance / env.d_max, 1.0)
     return _assign_matrix(utility)
 
 
@@ -126,7 +126,7 @@ class RuleController:
             distance = np.linalg.norm(
                 env.uav_pos[:, None, :] - env._cell_centers[None, :, :], axis=2
             )
-            travel = np.maximum(distance / env.v_uav, 1.0)
+            travel = np.maximum(distance / env.d_max, 1.0)
             phase_mean = np.divide(
                 self.phase_sum,
                 np.maximum(self.phase_count, 1.0),

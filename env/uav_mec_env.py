@@ -1068,7 +1068,7 @@ class UAVMECEnv:
             stale = np.clip((self.t - self.cell_last_seen) / max(self.T, 1), 0.0, 1.0)
             score = meanpast / max(self.grid_density_norm, 1.0) + w_explore * stale
         dist = np.linalg.norm(self.uav_pos[:, None, :] - self._cell_centers[None, :, :], axis=2)
-        travel = np.maximum(dist / self.v_uav, 1.0)
+        travel = np.maximum(dist / self.d_max, 1.0)
         util = score[None, :] / travel
         active = self.active if self.hard_energy_constraint else np.ones(self.M, dtype=bool)
         self._ensure_coordination_leader(active)
