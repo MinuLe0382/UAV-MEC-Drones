@@ -5,6 +5,10 @@ Python: 3.10–3.12.
 Reference environment: Linux x86-64, Intel Core i9-10940X,
 Python 3.10.13, NumPy 1.26.3, PyTorch 2.2.0.
 
+Simulation results may vary across platforms and NumPy builds because
+equal-utility assignments can be ordered differently. Statistical tables can
+be recalculated directly from the supplied result files.
+
 ## Install
 
 ```bash
