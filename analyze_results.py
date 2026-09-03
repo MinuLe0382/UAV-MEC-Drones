@@ -6,7 +6,6 @@ from pathlib import Path
 
 import numpy as np
 from scipy import stats
-from config import validate_runtime
 
 
 DISPLAY = {
@@ -177,7 +176,6 @@ def main() -> None:
     parser.add_argument("--input", type=Path, default=ROOT / "data/reported_results.json")
     parser.add_argument("--output", type=Path, default=ROOT / "results/statistical_analysis.json")
     args = parser.parse_args()
-    validate_runtime()
     rows = json.loads(args.input.read_text(encoding="utf-8"))["rows"]
     robustness = any("condition" in row for row in rows)
     if robustness and not all("condition" in row for row in rows):

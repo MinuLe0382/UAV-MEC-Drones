@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import warnings
 from pathlib import Path
 
 
@@ -38,4 +39,9 @@ def validate_runtime() -> None:
     import numpy as np
 
     if np.__version__ != "1.26.3":
-        raise RuntimeError(f"NumPy 1.26.3 is required; found {np.__version__}")
+        warnings.warn(
+            f"Reference simulations use NumPy 1.26.3; found {np.__version__}. "
+            "Simulation results may differ.",
+            RuntimeWarning,
+            stacklevel=2,
+        )

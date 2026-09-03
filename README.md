@@ -2,6 +2,9 @@
 
 Python: 3.10–3.12.
 
+Reference environment: Linux x86-64, Intel Core i9-10940X,
+Python 3.10.13, NumPy 1.26.3, PyTorch 2.2.0.
+
 ## Install
 
 ```bash

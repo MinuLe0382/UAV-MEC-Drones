@@ -3,6 +3,7 @@ from __future__ import annotations
 import inspect
 import json
 import unittest
+import warnings
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -176,10 +177,16 @@ class ReleaseTests(unittest.TestCase):
         for path in paths:
             load_scenario(path)
 
-    def test_numpy_version_guard(self):
-        validate_runtime()
+    def test_reference_numpy_version_is_silent(self):
+        with patch.object(np, "__version__", "1.26.3"):
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                validate_runtime()
+        self.assertEqual(caught, [])
+
+    def test_other_numpy_versions_warn_without_blocking(self):
         with patch.object(np, "__version__", "2.4.4"):
-            with self.assertRaises(RuntimeError):
+            with self.assertWarnsRegex(RuntimeWarning, "Simulation results may differ"):
                 validate_runtime()
 
     def test_holm_algorithm(self):
