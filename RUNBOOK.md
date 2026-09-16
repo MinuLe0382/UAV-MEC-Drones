@@ -18,6 +18,7 @@ Recompute the statistical tables:
 ```bash
 python analyze_results.py
 python analyze_results.py --input data/reported_robustness.json --output results/robustness_statistics.json
+python analyze_results.py --input data/operating_cost_sensitivity.json --output results/operating_cost_statistics.json
 ```
 
 ## Evaluate the selected policies
@@ -43,8 +44,9 @@ python evaluate.py --split test --methods memory anticipatory belief_mpc full_in
 ```
 
 All methods receive the same fixed realization for each scenario. Each learned
-method is evaluated with four independently trained policies, and the analysis
-first averages those four values within each scenario.
+method is evaluated with four independently trained policies. The analysis
+resamples training runs and scenarios 100,000 times. Compared methods share
+the scenario sample, while their training runs are sampled independently.
 
 The eight-axis robustness evaluation uses the same selected policies:
 

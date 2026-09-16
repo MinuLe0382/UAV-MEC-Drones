@@ -17,8 +17,32 @@ authors:
     given-names: Joonho
   - family-names: Kim
     given-names: Jin Young
-version: 1.0.1
-date-released: 2026-09-03
+version: 1.1.0
+date-released: 2026-09-16
 license: MIT
 repository-code: "https://github.com/MinuLe0382/UAV-MEC-Drones"
 url: "https://github.com/MinuLe0382/UAV-MEC-Drones"
+preferred-citation:
+  type: article
+  title: "Deadline-Paced Patrol with Goal-Conditioned Multi-Agent Reinforcement Learning for Sensing-Limited UAV-Assisted Mobile Edge Computing"
+  authors:
+    - family-names: Lee
+      given-names: Mingyu
+    - family-names: Kim
+      given-names: Soohyun
+    - family-names: Kim
+      given-names: Jeongho
+    - family-names: Kim
+      given-names: Kyounghun
+    - family-names: Sun
+      given-names: Youngghyu
+    - family-names: Seon
+      given-names: Joonho
+    - family-names: Kim
+      given-names: Jin Young
+  journal: Drones
+  volume: "10"
+  issue: "9"
+  year: 2026
+  doi: 10.3390/drones10090700
+  url: "https://doi.org/10.3390/drones10090700"

@@ -11,12 +11,14 @@ from unittest.mock import Mock, patch
 import numpy as np
 
 from analyze_results import (
-    HOLM_FAMILIES,
-    add_holm_adjustment,
+    COST_CONDITIONS,
+    TABLE4_METRICS,
+    TABLE5_METRICS,
+    analyze_cost_sensitivity,
     analyze_main,
     analyze_robustness,
-    comparison,
-    scenario_values,
+    holm,
+    method_matrix,
 )
 from config import validate_runtime
 from evaluate import make_environment
@@ -82,14 +84,16 @@ class ReleaseTests(unittest.TestCase):
             ),
         )
 
-    def test_primary_paired_result(self):
-        rows = json.loads((ROOT / "data" / "reported_results.json").read_text(encoding="utf-8"))[
-            "rows"
-        ]
-        result = comparison(rows, "dpp_gcmarl", "mappo", "e2e")
-        self.assertAlmostEqual(result["difference"], 0.03633966145905827)
-        self.assertAlmostEqual(result["confidence_interval"][0], 0.031100951431928786)
-        self.assertAlmostEqual(result["confidence_interval"][1], 0.04157837148618776)
+    def test_primary_result(self):
+        result = json.loads((ROOT / "data/main_statistics.json").read_text())
+        record = result["tables"]["table3"]["dpp_gcmarl_minus_mappo"]["e2e"]
+        self.assertAlmostEqual(record["difference"], 3.6339661459058306)
+        np.testing.assert_allclose(
+            record["difference_ci95"],
+            [2.601030599393475, 4.633024493442783],
+            rtol=0,
+            atol=0,
+        )
 
     def test_reward_arithmetic(self):
         from env.reward import movement_reward
@@ -190,50 +194,28 @@ class ReleaseTests(unittest.TestCase):
                 validate_runtime()
 
     def test_holm_algorithm(self):
-        records = {name: {"p_value": p} for name, p in zip("abc", [0.03, 0.01, 0.04])}
-        add_holm_adjustment(records)
-        self.assertEqual([records[name]["adjusted_p_value"] for name in "abc"], [0.06, 0.03, 0.06])
+        self.assertEqual(holm([0.03, 0.01, 0.04]), [0.06, 0.03, 0.06])
 
     def test_holm_families_match_the_tables(self):
-        result = analyze_main(self.rows)
-        for comparator, family in HOLM_FAMILIES.items():
-            record = result["comparisons"][f"dpp_gcmarl_minus_{comparator}"]
-            self.assertEqual(tuple(record), family)
-            self.assertNotIn("collection", record)
-            self.assertNotIn("coverage", record)
-        revisit = result["comparisons"]["dpp_gcmarl_minus_memory_gcmarl"]["revisit_p95"]
+        result = analyze_main(self.rows, replicates=1_000)["tables"]
+        table4 = result["table4"]["dpp_gcmarl_minus_memory_gcmarl"]
+        table5 = result["table5"]["dpp_gcmarl_minus_without_gcm"]
+        self.assertEqual(tuple(table4), TABLE4_METRICS)
+        self.assertEqual(tuple(table5), TABLE5_METRICS)
+        revisit = table4["revisit_p95"]
         self.assertAlmostEqual(revisit["difference"], 0.75, delta=0.01)
-        self.assertAlmostEqual(revisit["adjusted_p_value"], 0.0445, delta=0.0001)
+        self.assertIn("p_holm", revisit)
 
     def test_duplicate_policy_row_is_rejected(self):
         with self.assertRaises(ValueError):
-            scenario_values([*self.rows, self.rows[0]], self.rows[0]["method"], "e2e")
+            method_matrix([*self.rows, self.rows[0]], self.rows[0]["method"], "e2e")
 
-    def test_robustness_averages_policies_and_excludes_nominal_from_holm(self):
-        rows = []
-        for condition, offset in (("nominal", 0.01), ("low", 0.02), ("high", 0.03)):
-            for scenario in range(4):
-                for seed in range(2):
-                    for method in ("dpp_gcmarl", "mappo"):
-                        value = 0.3 + seed * 0.01
-                        if method == "dpp_gcmarl":
-                            value += offset + scenario * 0.001
-                        rows.append(
-                            {
-                                "condition": condition,
-                                "method": method,
-                                "scenario_seed": scenario,
-                                "training_seed": seed,
-                                "e2e": value,
-                            }
-                        )
-        result = analyze_robustness(rows)
-        self.assertEqual(result["holm_family"], ["high", "low"])
-        for condition, offset in (("nominal", 0.01), ("low", 0.02), ("high", 0.03)):
-            paired = result["conditions"][condition]["comparison"]
-            self.assertEqual(paired["n_scenarios"], 4)
-            self.assertAlmostEqual(paired["difference"], offset + 0.0015)
-        self.assertNotIn("adjusted_p_value", result["conditions"]["nominal"]["comparison"])
+    def test_nominal_is_excluded_from_holm(self):
+        rows = json.loads((ROOT / "data/reported_robustness.json").read_text())["rows"]
+        result = analyze_robustness(rows, replicates=1_000)
+        self.assertEqual(len(result["holm_family"]), 16)
+        self.assertNotIn("nominal", result["holm_family"])
+        self.assertNotIn("p_holm", result["conditions"]["nominal"])
 
     def test_timing_warmup_is_excluded_from_samples(self):
         from benchmark_runtime import measure
@@ -297,24 +279,20 @@ class ReleaseTests(unittest.TestCase):
 
     def test_table6_recomputed_from_rows(self):
         rows = json.loads((ROOT / "data/reported_robustness.json").read_text())["rows"]
-        expected = json.loads((ROOT / "data/robustness_statistics.json").read_text())["rows"]
+        expected = json.loads((ROOT / "data/robustness_statistics.json").read_text())
         actual = analyze_robustness(rows)
         self.assertEqual(len(rows), 5440)
         self.assertEqual(len(actual["holm_family"]), 16)
         self.assertNotIn("nominal", actual["holm_family"])
-        for record in expected:
-            result = actual["conditions"][record["condition_id"]]
-            self.assertAlmostEqual(
-                100 * result["comparison"]["difference"], record["difference_pp"], places=10
-            )
-            np.testing.assert_allclose(
-                np.array(result["comparison"]["confidence_interval"]) * 100,
-                record["difference_ci95_pp"],
-                atol=1e-10,
-            )
-            np.testing.assert_allclose(
-                result["comparison"]["adjusted_p_value"], record["p_holm"], rtol=1e-10, atol=0
-            )
+        self.assertEqual(actual, expected)
+
+    def test_table7_recomputed_from_rows(self):
+        rows = json.loads((ROOT / "data/operating_cost_sensitivity.json").read_text())["rows"]
+        expected = json.loads((ROOT / "data/operating_cost_statistics.json").read_text())
+        actual = analyze_cost_sensitivity(rows)
+        self.assertEqual(len(rows), 2880)
+        self.assertEqual(tuple(actual["conditions"]), COST_CONDITIONS)
+        self.assertEqual(actual, expected)
 
 
 if __name__ == "__main__":

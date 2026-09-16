@@ -1,5 +1,7 @@
 # DPP-GCMARL
 
+Paper: [Drones 10(9), 700](https://doi.org/10.3390/drones10090700).
+
 Python: 3.10–3.12.
 
 Reference environment: Linux x86-64, Intel Core i9-10940X,

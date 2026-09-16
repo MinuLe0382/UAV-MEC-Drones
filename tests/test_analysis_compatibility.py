@@ -19,19 +19,26 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class AnalysisCompatibilityTests(unittest.TestCase):
     def test_analysis_cli_does_not_check_simulation_numpy_version(self):
-        inputs = ("reported_results.json", "reported_robustness.json")
+        inputs = (
+            "reported_results.json",
+            "reported_robustness.json",
+            "operating_cost_sensitivity.json",
+        )
         for name in inputs:
             with self.subTest(input=name), tempfile.TemporaryDirectory() as directory:
                 source = ROOT / "data" / name
                 output = Path(directory) / "statistics.json"
                 rows = json.loads(source.read_text(encoding="utf-8"))["rows"]
-                analyze = (
-                    analyze_results.analyze_robustness
-                    if "condition" in rows[0]
-                    else analyze_results.analyze_main
-                )
-                expected = analyze(rows)
-                argv = ["analyze_results.py", "--input", str(source), "--output", str(output)]
+                expected = analyze_results.analyze(rows, replicates=1_000)
+                argv = [
+                    "analyze_results.py",
+                    "--input",
+                    str(source),
+                    "--output",
+                    str(output),
+                    "--replicates",
+                    "1000",
+                ]
                 with (
                     patch.object(np, "__version__", "2.4.4"),
                     patch(
